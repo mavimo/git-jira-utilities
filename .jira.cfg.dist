@@ -1,0 +1,8 @@
+[JIRA]
+hostname=
+username=
+password=
+
+[Pattern]
+branch=%(issue_id)_%(story_name)
+message=refs #%(issue_id) - %(story_name):
