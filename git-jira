@@ -41,11 +41,15 @@ def main(argv):
     }
 
     # Connect to jira
-    jira = JIRA(options, basic_auth=(cfg['JIRA']['username'], cfg['JIRA']['password']), validate=True)
+    try:
+        jira = JIRA(options, basic_auth=(cfg['JIRA']['username'], cfg['JIRA']['password']), validate=True)
+    except Exception, e:
+        print "Error occured, are you sure you can connect to JIRA server?"
+        sys.exit(5)
 
     # Branch naming pattern
     branch = cfg['pattern']['branch']
-    try:
+
         # Get issue information
         issue = jira.issue(issue_id)
 
