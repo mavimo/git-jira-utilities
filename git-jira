@@ -50,15 +50,33 @@ def main(argv):
     # Branch naming pattern
     branch = cfg['pattern']['branch']
 
+    try:
         # Get issue information
         issue = jira.issue(issue_id)
 
         # Extract items from issue info
         story_name = issue.fields.summary
 
+        # Print report on specified issue
+        print " "
+        print " .------------------------------------------------------------------------------"
+        print " | Link     : " + cfg['JIRA']['hostname'] + '/browse/' + issue.key
+        print " | Type     : " + issue.fields.issuetype.name
+        print " | Priority : " + issue.fields.priority.name
+        print " | Status   : " + issue.fields.status.name
+        print " | "
+        if hasattr(issue.fields, 'parent'):
+            print " | Parent   : " + issue.fields.parent.key + " - " + issue.fields.parent.fields.summary
+            print " | "
+        print " | Summary  : " + issue.fields.summary
+        print " | Assigee  : " + issue.fields.assignee.displayName
+        print " | Reporter : " + issue.fields.reporter.displayName
+        print " `------------------------------------------------------------------------------"
+        print " "
+
         # Clean story name
         story_name = re.sub(r"[^\w\s]", '', story_name)
-        story_name = re.sub(r"\s+", '_', story_name)
+        story_name = re.sub(r"\s+", '-', story_name)
         story_name = story_name.lower()
 
         # Replace patterns in branch name
